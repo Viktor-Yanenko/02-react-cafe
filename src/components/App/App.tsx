@@ -15,10 +15,10 @@ export default function App() {
     })
 
     function handleVotes(type: VoteType) {
-        setVotes({
+        setVotes(votes => ({
             ...votes,
             [type]: votes[type] + 1,
-        })
+        }))
     }
 
     function resetVotes() {
@@ -26,12 +26,12 @@ export default function App() {
     }
 
     const totalVotes = votes.good + votes.neutral + votes.bad;
-    const positiveRate = totalVotes ? Math.round((votes.good / totalVotes) * 100) : 0;
+    const positiveRate = totalVotes ? (votes.good / totalVotes) * 100 : 0;
 
     return (
         <div className={css.app}>
             <CafeInfo />
-            <VoteOptions onVote={handleVotes} onReset={resetVotes} canReset={totalVotes ? true : false} />
+            <VoteOptions onVote={handleVotes} onReset={resetVotes} canReset={!!totalVotes} />
             {totalVotes ?
                 <VoteStats votes={votes} totalVotes={totalVotes} positiveRate={positiveRate} /> :
                 <Notification />
